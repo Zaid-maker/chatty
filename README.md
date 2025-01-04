@@ -8,6 +8,7 @@ A real-time chat app built with React, Vite, and Socket.io
 - signup route (POST): `/api/auth/signup` ✔
 - logout route (POST): `/api/auth/logout` ✔
 - update profile route (PUT): `/api/auth/update-profile` ✔
+- check auth route (GET): `/api/auth/check` ✔
 
 ## Backend Env Setup
 
