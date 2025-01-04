@@ -145,6 +145,13 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+/**
+ * Checks if a user is authenticated by verifying the JWT token sent in the request cookies.
+ * If token is invalid, not found, or user is not found, returns a 401/404 JSON response accordingly.
+ * If token is valid and user is found, returns the user object as a JSON response.
+ * @param {ExpressRequest} req - The Express request object.
+ * @param {ExpressResponse} res - The Express response object.
+ */
 export const checkAuth = (req, res) => {
   try {
     res.status(200).json(req.user)
