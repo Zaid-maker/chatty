@@ -55,7 +55,7 @@ export const getConnectionStats = () => {
     host: mongoose.connection.host,
     name: mongoose.connection.name,
     collections: mongoose.connection.collections,
-    models: mongoose.connection.models
+    models: mongoose.connection.models,
   };
 };
 
@@ -73,7 +73,7 @@ export const reconnect = async (retries = 3) => {
       }
     } catch (error) {
       console.error(`Reconnection attempt ${i + 1} failed:`, error);
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2s between retries
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2s between retries
     }
   }
   throw new Error(`Failed to reconnect after ${retries} attempts`);
@@ -107,7 +107,7 @@ export const clearDatabase = async () => {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('Cannot clear database in production');
   }
-  
+
   const collections = mongoose.connection.collections;
   for (const key in collections) {
     await collections[key].deleteMany();

@@ -1,12 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import {
-  connectDB,
-  setupConnectionHandlers,
-  isConnected,
-  getConnectionStats
-} from './lib/db.js';
+import { connectDB, setupConnectionHandlers, isConnected, getConnectionStats } from './lib/db.js';
 
 dotenv.config();
 const app = express();
@@ -19,9 +14,9 @@ app.use(cors());
 // 🔌 Database connection status middleware
 app.use((req, res, next) => {
   if (!isConnected()) {
-    return res.status(503).json({ 
+    return res.status(503).json({
       status: '❌ Error',
-      error: 'Database connection unavailable' 
+      error: 'Database connection unavailable',
     });
   }
   next();
@@ -41,12 +36,12 @@ app.get('/health', (req, res) => {
     database: {
       connected: isConnected() ? '🟢 Connected' : '🔴 Disconnected',
       host: `🖥️ ${dbStats.host}`,
-      name: `📁 ${dbStats.name}`
+      name: `📁 ${dbStats.name}`,
     },
     server: {
       uptime: `⏱️ ${process.uptime().toFixed(2)}s`,
-      memory: `💾 ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`
-    }
+      memory: `💾 ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`,
+    },
   });
 });
 
@@ -56,7 +51,7 @@ const init = async () => {
     console.log('🔄 Initializing server...');
     await connectDB();
     setupConnectionHandlers();
-    
+
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`
