@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "seed:db": "bun src/seeds/user.seed.js",
+    "seed:db:clear": "bun src/seeds/user.seed.js --clear"
   },
   "keywords": [],
   "author": "",
