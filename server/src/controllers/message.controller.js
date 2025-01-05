@@ -1,5 +1,6 @@
 import User from "../models/user.model";
 import Message from "../models/message.model";
+
 import cloudinary from "../lib/cloudinary";
 
 /**
@@ -68,6 +69,7 @@ export const sendMessage = async (req, res) => {
 
         let imageUrl;
         if (image) {
+            // upload base64 image to cloudinary
             const uploadResponse = await cloudinary.uploader.upload(image)
             imageUrl = uploadResponse.secure_url;
         }
