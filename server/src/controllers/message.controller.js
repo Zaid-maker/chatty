@@ -1,5 +1,6 @@
 import User from "../models/user.model";
 import Message from "../models/message.model";
+import cloudinary from "../lib/cloudinary";
 
 /**
  * Gets a list of all users except the currently logged in user.
@@ -46,6 +47,45 @@ export const getMessages = async (req, res) => {
         res.status(200).json(messages);
     } catch (error) {
         console.error("Error in getMessages: ", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+/**
+ * Handles a user sending a message to another user.
+ * 
+ * @function sendMessage
+ * @param {ExpressRequest} req - The Express request object.
+ * @param {ExpressResponse} res - The Express response object.
+ * @returns {Promise<void>} A promise that resolves when the message has been sent as a JSON response.
+ * @throws {Error} An error if there is a problem while sending the message.
+ */
+export const sendMessage = async (req, res) => {
+    try {
+        const { text, image } = req.body;
+        const { id: receiverId } = req.params;
+        const senderId = req.user._id;
+
+        let imageUrl;
+        if (image) {
+            const uploadResponse = await cloudinary.uploader.upload(image)
+            imageUrl = uploadResponse.secure_url;
+        }
+
+        const newMessage = new Message({
+            senderId,
+            receiverId,
+            text,
+            image: imageUrl,
+        });
+
+        await newMessage.save();
+
+        // TODO: Add socket.io code
+
+        res.status(201).json(newMessage);
+    } catch (error) {
+        console.log("Error in sendMessage: ", error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
