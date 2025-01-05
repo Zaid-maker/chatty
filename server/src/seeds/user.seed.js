@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { connectDB } from '../lib/db';
+import { connectDB, disconnectDB } from '../lib/db';
 import User from '../models/user.model';
 
 // Load environment variables from a .env file into process.env
@@ -72,6 +72,24 @@ const seedUsers = [
 ];
 
 /**
+ * Clears all existing data in the database.
+ *
+ * @function clearDatabase
+ * @returns {Promise<void>} A promise that resolves when the database has been cleared successfully.
+ * @throws {Error} An error if there is a problem while clearing the database.
+ */
+const clearDatabase = async () => {
+  try {
+    console.log('🗑️  Clearing existing data...');
+    await User.deleteMany({});
+    console.log('✅ Database cleared');
+  } catch (error) {
+    console.error('❌ Error clearing database:', error);
+    throw error;
+  }
+};
+
+/**
  * Seeds the database with the given seedUsers array.
  *
  * @function seedDatabase
@@ -80,15 +98,41 @@ const seedUsers = [
  */
 const seedDatabase = async () => {
   try {
+    // Check if we're in production
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('❌ Cannot seed the database in production');
+    }
+
+    console.log('🔌 Connecting to database...');
     await connectDB();
 
-    await User.insertMany(seedUsers);
+    // Clear existing data if --clear flag is passed
+    if (process.argv.includes('--clear')) {
+      await clearDatabase();
+    }
 
-    console.log('🌱 Database has been seeded successfully');
+    console.log('🌱 Seeding database...');
+    const insertedUsers = await User.insertMany(seedUsers);
+
+    console.log(`🌱 Database has been successfully seeded with ${insertedUsers.length} users`);
   } catch (error) {
     console.error('❌ Error while seeding database:', error);
+    process.exit(1);
+  } finally {
+    await disconnectDB();
+    console.log('🔌 Disconnecting from database...');
   }
 };
 
+// Run seeder if this file is run directly
+if (require.main === module) {
+  seedDatabase()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error('Fatal error:', error);
+      process.exit(1);
+    });
+}
+
 // Call the seedDatabase function to seed the database
-seedDatabase();
+export { seedDatabase };
