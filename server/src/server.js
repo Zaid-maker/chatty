@@ -7,6 +7,7 @@ import { connectDB, setupConnectionHandlers, isConnected, getConnectionStats } f
 import authRoutes from './routes/auth.route.js'; // Ensure routes are imported
 import messageRoutes from './routes/message.route.js'; // Ensure routes are imported
 import { format } from 'date-fns'; // Ensure date-fns is imported
+import healthRoutes from './routes/health.route.js';
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 console.log('📝 Loading routes...');
 app.use('/api/auth', authRoutes);
 app.use('/api/message', messageRoutes);
+app.use('/api/health', healthRoutes);
 
 // Production configuration
 if (process.env.NODE_ENV === "production") {
