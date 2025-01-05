@@ -1,7 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser'; // Ensure cookieParser is imported
 import { connectDB, setupConnectionHandlers, isConnected, getConnectionStats } from './lib/db.js';
+import authRoutes from './routes/auth.route.js'; // Ensure routes are imported
+import messageRoutes from './routes/message.route.js'; // Ensure routes are imported
 
 dotenv.config();
 const app = express();
@@ -42,6 +45,15 @@ app.get('/health', (req, res) => {
       uptime: `⏱️ ${process.uptime().toFixed(2)}s`,
       memory: `💾 ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB`,
     },
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    status: '❌ Error',
+    error: 'Internal Server Error',
   });
 });
 
