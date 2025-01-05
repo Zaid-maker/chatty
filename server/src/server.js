@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'; // Ensure cookieParser is imported
+import path from 'path'; // Add path import
 import { connectDB, setupConnectionHandlers, isConnected, getConnectionStats } from './lib/db.js';
 import authRoutes from './routes/auth.route.js'; // Ensure routes are imported
 import messageRoutes from './routes/message.route.js'; // Ensure routes are imported
@@ -35,6 +36,17 @@ app.use((req, res, next) => {
 console.log('📝 Loading routes...');
 app.use('/api/auth', authRoutes);
 app.use('/api/message', messageRoutes);
+
+// Production configuration
+if (process.env.NODE_ENV === "production") {
+  console.log("🏭 Production mode detected, serving static files");
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("*", (req, res) => {
+    console.log("📂 Serving frontend build at:", path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 
 // 🏥 Health check endpoint
 app.get('/health', (req, res) => {
