@@ -1,3 +1,12 @@
+/**
+ * Gets a list of all users except the currently logged in user.
+ *
+ * @function getUsersForSidebar
+ * @param {ExpressRequest} req - The Express request object.
+ * @param {ExpressResponse} res - The Express response object.
+ * @returns {Promise<void>} A promise that resolves when the list of users has been sent as a JSON response.
+ * @throws {Error} An error if there is a problem while retrieving the list of users.
+ */
 export const getUsersForSidebar = async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
