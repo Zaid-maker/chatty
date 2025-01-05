@@ -1,31 +1,39 @@
-# Chatty
+# Chatty 💬
 
 A real-time chat app built with React, Vite, and Socket.io
 
-## Features
+## ✨ Features
 
-- Real-time messaging using Socket.io
-- User authentication and authorization
-- Profile customization
-- Online/offline user status
-- Message history
-- Responsive design
+- 🚀 Real-time messaging using Socket.io
+- 🔐 User authentication and authorization
+- 👤 Profile customization
+- 🟢 Online/offline user status
+- 📜 Message history
+- 📱 Responsive design
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-- Frontend: React + Vite
-- Backend: Node.js + Express + Bun
-- Real-time: Socket.io
-- Database: MongoDB
-- Authentication: JWT
+- 🎨 Frontend:
+  - React + Vite
+  - TailwindCSS
+  - Daisy UI
+- 🖥️ Backend:
+  - Node.js + Express
+  - Bun runtime
+- ⚡ Real-time:
+  - Socket.io
+- 🗄️ Database:
+  - MongoDB
+- 🔑 Authentication:
+  - JWT
 
-## Installation
+## 📥 Installation
 
-### Prerequisites
+### 📋 Prerequisites
 
 - Install Bun: `curl -fsSL https://bun.sh/install | bash`
 
-### Backend Setup
+### 🔧 Backend Setup
 
 1. Navigate to server directory:
 ```shell
@@ -60,7 +68,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 bun run dev
 ```
 
-### Frontend Setup
+### 🎨 Frontend Setup
 
 1. Navigate to client directory:
 ```shell
@@ -77,27 +85,27 @@ bun install
 bun run dev
 ```
 
-## API Documentation
+## 📚 API Documentation
 
-### Authentication Routes
+### 🔐 Authentication Routes
 - `POST /api/auth/login` - User login
 - `POST /api/auth/signup` - User registration
 - `POST /api/auth/logout` - User logout
 - `PUT /api/auth/update-profile` - Update user profile
 - `GET /api/auth/check` - Check authentication status
 
-### Message Routes
+### 💬 Message Routes
 - `POST /api/messages/send/:id` - Send message to user
 - `GET /api/messages/:id` - Get chat history
 
-### User Routes
+### 👥 User Routes
 - `GET /api/users` - Get all users
 - `GET /api/users/:id` - Get specific user
 
-### System Routes
+### 🔍 System Routes
 - `GET /api/health` - Check system health
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create your feature branch
@@ -105,6 +113,6 @@ bun run dev
 4. Push to the branch
 5. Open a Pull Request
 
-## License
+## 📄 License
 
 MIT License
