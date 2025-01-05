@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'; // Ensure cookieParser is imported
 import { connectDB, setupConnectionHandlers, isConnected, getConnectionStats } from './lib/db.js';
 import authRoutes from './routes/auth.route.js'; // Ensure routes are imported
 import messageRoutes from './routes/message.route.js'; // Ensure routes are imported
+import { format } from 'date-fns'; // Ensure date-fns is imported
 
 dotenv.config();
 const app = express();
@@ -35,7 +36,7 @@ app.get('/health', (req, res) => {
   const dbStats = getConnectionStats();
   res.json({
     status: '✅ Operational',
-    timestamp: new Date(),
+    timestamp: format(new Date(), 'PPpp'), // Improved timestamp format
     database: {
       connected: isConnected() ? '🟢 Connected' : '🔴 Disconnected',
       host: `🖥️ ${dbStats.host}`,
