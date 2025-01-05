@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import jwt from 'jsonwebtoken';
 
 /**
  * Protects a route by verifying the JWT token sent in the request cookies.
