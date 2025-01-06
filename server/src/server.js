@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'; // Ensure cookieParser is imported
 import path from 'path'; // Add path import
+import fs from 'fs'; // Add fs import
 import { connectDB, setupConnectionHandlers, isConnected, getConnectionStats } from './lib/db.js';
 import authRoutes from './routes/auth.route.js'; // Ensure routes are imported
 import messageRoutes from './routes/message.route.js'; // Ensure routes are imported
@@ -77,11 +78,22 @@ app.use('/api/health', healthRoutes);
 // Production configuration
 if (process.env.NODE_ENV === "production") {
   console.log("🏭 Production mode detected, serving static files");
-  app.use(express.static(path.join(__dirname, "../client/dist")));
+  const clientDistPath = path.resolve(__dirname, '../../client/dist');
+  
+  app.use(express.static(clientDistPath));
+  console.log("📂 Serving static files from:", clientDistPath);
 
   app.get("*", (req, res) => {
-    console.log("📂 Serving client build at:", path.join(__dirname, "../client", "dist", "index.html"));
-    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+    const indexPath = path.resolve(clientDistPath, 'index.html');
+    console.log("📂 Serving client build at:", indexPath);
+    
+    // Check if file exists before sending
+    if (!fs.existsSync(indexPath)) {
+      console.error("❌ Client build not found at:", indexPath);
+      return res.status(404).send('Client build not found');
+    }
+    
+    res.sendFile(indexPath);
   });
 }
 
