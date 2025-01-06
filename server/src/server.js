@@ -77,11 +77,11 @@ app.use('/api/health', healthRoutes);
 // Production configuration
 if (process.env.NODE_ENV === "production") {
   console.log("🏭 Production mode detected, serving static files");
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.use(express.static(path.join(__dirname, "../client/dist")));
 
   app.get("*", (req, res) => {
-    console.log("📂 Serving frontend build at:", path.join(__dirname, "../frontend", "dist", "index.html"));
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    console.log("📂 Serving client build at:", path.join(__dirname, "../client", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
   });
 }
 
