@@ -2,6 +2,10 @@
 
 A real-time chat app built with React, Vite, and Socket.io
 
+## 🌐 Live Demo
+
+Check out the live demo: [Chatty App](https://chatty-u57f.onrender.com)
+
 ## ✨ Features
 
 - 🚀 Real-time messaging using Socket.io
