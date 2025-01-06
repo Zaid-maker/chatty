@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite",
-    "build": "bunx --bun vite build",
+    "dev": "vite",
+    "build": "vite build",
     "lint": "eslint .",
-    "preview": "bunx --bun vite preview"
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
