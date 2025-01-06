@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.route.js'; // Ensure routes are imported
 import messageRoutes from './routes/message.route.js'; // Ensure routes are imported
 import { format } from 'date-fns'; // Ensure date-fns is imported
 import healthRoutes from './routes/health.route.js';
+import { metrics } from './controllers/health.controller.js';
 
 dotenv.config();
 const app = express();
@@ -36,22 +37,22 @@ app.use((req, res, next) => {
     };
     
     // Update metrics
-    systemMetrics.requestsPerEndpoint[req.path] = (systemMetrics.requestsPerEndpoint[req.path] || 0) + 1;
-    systemMetrics.responseTimeAvg[req.path] = systemMetrics.responseTimeAvg[req.path] 
-      ? (systemMetrics.responseTimeAvg[req.path] + duration) / 2 
+    metrics.systemMetrics.requestsPerEndpoint[req.path] = (metrics.systemMetrics.requestsPerEndpoint[req.path] || 0) + 1;
+    metrics.systemMetrics.responseTimeAvg[req.path] = metrics.systemMetrics.responseTimeAvg[req.path] 
+      ? (metrics.systemMetrics.responseTimeAvg[req.path] + duration) / 2 
       : duration;
       
     if (res.statusCode >= 400) {
-      systemMetrics.errorCount++;
-      systemMetrics.lastErrors.push(log);
-      if (systemMetrics.lastErrors.length > 10) systemMetrics.lastErrors.shift();
-      errorLog.push(log);
+      metrics.systemMetrics.errorCount++;
+      metrics.systemMetrics.lastErrors.push(log);
+      if (metrics.systemMetrics.lastErrors.length > 10) metrics.systemMetrics.lastErrors.shift();
+      metrics.errorLog.push(log);
     }
-    requestLog.push(log);
+    metrics.requestLog.push(log);
     
     // Keep logs within reasonable size
-    if (requestLog.length > 1000) requestLog.shift();
-    if (errorLog.length > 500) errorLog.shift();
+    if (metrics.requestLog.length > 1000) metrics.requestLog.shift();
+    if (metrics.errorLog.length > 500) metrics.errorLog.shift();
   });
   next();
 });
