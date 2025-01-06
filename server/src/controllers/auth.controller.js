@@ -11,6 +11,7 @@ import bycrypt from 'bcryptjs';
  * @param {ExpressResponse} res - The Express response object.
  */
 export const signup = async (req, res) => {
+  console.log('📝 New signup request received');
   const { fullName, email, password } = req.body;
 
   try {
@@ -26,7 +27,10 @@ export const signup = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    if (user) return res.status(400).json({ message: 'User already exists' });
+    if (user) {
+      console.log(`❌ Signup failed: Email ${email} already exists`);
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
     const salt = await bycrypt.genSalt(10);
     const hashedPassword = await bycrypt.hash(password, salt);
@@ -38,6 +42,7 @@ export const signup = async (req, res) => {
     });
 
     if (newUser) {
+      console.log(`✅ User created successfully: ${email}`);
       // generate JWT totken
       generateToken(newUser._id, res);
       await newUser.save();
@@ -65,21 +70,25 @@ export const signup = async (req, res) => {
  * @param {ExpressResponse} res - The Express response object.
  */
 export const login = async (req, res) => {
+  console.log('🔑 New login attempt');
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
+      console.log(`❌ Login failed: No user found with email ${email}`);
       return res.status(400).json({ message: 'User does not exist' });
     }
 
     const isPasswordCorrect = await bycrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
+      console.log(`❌ Login failed: Invalid password for ${email}`);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    console.log(`✅ User logged in successfully: ${email}`);
     // generate JWT token
     generateToken(user._id, res);
 
@@ -106,7 +115,9 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   try {
+    console.log('👋 User logout request');
     res.cookie('jwt', '', { maxAge: 0 }); // Imediately expire the cookie
+    console.log('✅ User logged out successfully');
     res.status(200).json({ message: 'User logged out successfully' });
   } catch (error) {
     console.log('Error in logout controller: ', error.message);
