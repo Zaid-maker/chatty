@@ -1,5 +1,15 @@
 const { execSync } = require('child_process');
 const path = require('path');
+const fs = require('fs');
+
+const initializeVercelProject = (projectPath) => {
+    // Check if .vercel directory exists
+    const vercelConfigPath = path.join(projectPath, '.vercel');
+    if (!fs.existsSync(vercelConfigPath)) {
+        console.log('Initializing Vercel project...');
+        execSync('bunx --bun vercel link --confirm', { stdio: 'inherit' });
+    }
+};
 
 const deployProject = (projectPath, projectName) => {
     console.log(`Deploying ${projectName}...`);
@@ -10,13 +20,16 @@ const deployProject = (projectPath, projectName) => {
         // Install dependencies using Bun
         execSync('bun install', { stdio: 'inherit' });
         
+        // Initialize Vercel project if needed
+        initializeVercelProject(projectPath);
+        
         // Build if it's the client
         if (projectName === 'Client') {
             execSync('bun run build', { stdio: 'inherit' });
         }
         
-        // Deploy to Vercel with Bun
-        execSync('bunx --bun vercel --prod', { stdio: 'inherit' });
+        // Deploy to Vercel with Bun (using --yes to skip confirmation)
+        execSync('bunx --bun vercel --prod --yes', { stdio: 'inherit' });
         
         console.log(`${projectName} deployed successfully!`);
     } catch (error) {
