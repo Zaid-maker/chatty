@@ -22,6 +22,40 @@ app.use(
   })
 );
 
+// Request logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const log = {
+      method: req.method,
+      path: req.path,
+      status: res.statusCode,
+      duration: `${duration}ms`,
+      timestamp: format(new Date(), 'PPpp')
+    };
+    
+    // Update metrics
+    systemMetrics.requestsPerEndpoint[req.path] = (systemMetrics.requestsPerEndpoint[req.path] || 0) + 1;
+    systemMetrics.responseTimeAvg[req.path] = systemMetrics.responseTimeAvg[req.path] 
+      ? (systemMetrics.responseTimeAvg[req.path] + duration) / 2 
+      : duration;
+      
+    if (res.statusCode >= 400) {
+      systemMetrics.errorCount++;
+      systemMetrics.lastErrors.push(log);
+      if (systemMetrics.lastErrors.length > 10) systemMetrics.lastErrors.shift();
+      errorLog.push(log);
+    }
+    requestLog.push(log);
+    
+    // Keep logs within reasonable size
+    if (requestLog.length > 1000) requestLog.shift();
+    if (errorLog.length > 500) errorLog.shift();
+  });
+  next();
+});
+
 // 🔌 Database connection status middleware
 app.use((req, res, next) => {
   if (!isConnected()) {

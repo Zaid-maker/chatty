@@ -3,9 +3,17 @@ import { getConnectionStats, isConnected } from '../lib/db.js';
 import os from 'os';
 import { networkInterfaces } from 'os';
 
-// Track request metrics
+// Metrics storage
 let requestCount = 0;
 let startTime = Date.now();
+let requestLog = [];
+let errorLog = [];
+let systemMetrics = {
+    requestsPerEndpoint: {},
+    responseTimeAvg: {},
+    errorCount: 0,
+    lastErrors: []
+};
 
 export const getHealthStatus = (req, res) => {
   requestCount++;
@@ -83,4 +91,63 @@ export const getHealthStatus = (req, res) => {
   }
 
   res.json(healthData);
+};
+
+export const getSystemLogs = (req, res) => {
+    const logs = {
+        requests: requestLog.slice(-100), // Last 100 requests
+        errors: errorLog.slice(-50), // Last 50 errors
+        timestamp: format(new Date(), 'PPpp')
+    };
+    res.json(logs);
+};
+
+export const getSystemMetrics = (req, res) => {
+    const metrics = {
+        ...systemMetrics,
+        timestamp: format(new Date(), 'PPpp'),
+        uptime: process.uptime(),
+        memoryUsage: process.memoryUsage(),
+        cpuUsage: process.cpuUsage()
+    };
+    res.json(metrics);
+};
+
+export const getProcessInfo = (req, res) => {
+    const processInfo = {
+        env: process.env,
+        argv: process.argv,
+        execPath: process.execPath,
+        execArgv: process.execArgv,
+        version: process.version,
+        versions: process.versions,
+        config: process.config,
+        pid: process.pid,
+        ppid: process.ppid,
+        platform: process.platform,
+        arch: process.arch,
+        features: process.features,
+        moduleLoadList: process.moduleLoadList,
+        timestamp: format(new Date(), 'PPpp')
+    };
+    // Remove sensitive information
+    delete processInfo.env.DATABASE_URL;
+    delete processInfo.env.JWT_SECRET;
+    
+    res.json(processInfo);
+};
+
+export const clearSystemMetrics = (req, res) => {
+    systemMetrics = {
+        requestsPerEndpoint: {},
+        responseTimeAvg: {},
+        errorCount: 0,
+        lastErrors: []
+    };
+    requestCount = 0;
+    startTime = Date.now();
+    requestLog = [];
+    errorLog = [];
+    
+    res.json({ message: '📊 Metrics cleared', timestamp: format(new Date(), 'PPpp') });
 };
