@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '../models/user.model';
 import Message from '../models/message.model';
 import cloudinary from '../lib/cloudinary';
+import { getReceiverSocketId, io } from '../lib/socket';
 
 interface AuthRequest extends Request {
   user: {
@@ -88,7 +89,10 @@ export const sendMessage = async (req: AuthRequest, res: Response): Promise<void
 
     await newMessage.save();
 
-    // TODO: Add socket.io code
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
