@@ -4,8 +4,8 @@
   "description": "A real-time chat app built with React, Vite, and Socket.io",
   "main": "index.js",
   "scripts": {
-    "build": "bun install --prefix server && bun install --prefix client && bun run build --prefix client",
-    "start": "bun run start --prefix server"
+    "build": "cd server && bun install && cd ../client && bun install && bun run build",
+    "start": "cd server && bun run start"
   },
   "keywords": [],
   "author": "",
