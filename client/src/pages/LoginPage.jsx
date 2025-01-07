@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthImagePattern from "../components/AuthImagePattern";
-import { Lock, Mail, MessageSquare } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, MessageSquare } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 const LoginPage = () => {
@@ -44,10 +44,12 @@ const LoginPage = () => {
                 </div>
                 <input
                   type="email"
-                  className={'input input-bordered w-full pl-10'}
+                  className={"input input-bordered w-full pl-10"}
                   placeholder="you@example.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -61,12 +63,25 @@ const LoginPage = () => {
                   <Lock className="h-5 w-5 text-base-content/40" />
                 </div>
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  className={'input input-bordered w-full pl-10'}
+                  type={showPassword ? "text" : "password"}
+                  className={`input input-bordered w-full pl-10`}
                   placeholder="••••••••"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5 text-base-content/40" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-base-content/40" />
+                  )}
+                </button>
               </div>
             </div>
           </form>
