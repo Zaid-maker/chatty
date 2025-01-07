@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 
 // import HomePage from "./pages/HomePage";
 // import SignUpPage from "./pages/SignUpPage";
-// import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
 // import ProfilePage from "./pages/ProfilePage";
 
@@ -35,12 +35,12 @@ function App() {
         {/* <Route
           path="/signup"
           element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
-        />
+        /> */}
         <Route
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}
         />
-        <Route
+        {/* <Route
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         /> */}
