@@ -1,10 +1,10 @@
 import express from 'express';
-import { 
-    getHealthStatus, 
-    getSystemLogs, 
-    getSystemMetrics,
-    getProcessInfo,
-    clearSystemMetrics 
+import {
+  getHealthStatus,
+  getSystemLogs,
+  getSystemMetrics,
+  getProcessInfo,
+  clearSystemMetrics,
 } from '../controllers/health.controller.js';
 
 const router = express.Router();

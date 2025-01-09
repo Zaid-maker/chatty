@@ -19,9 +19,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://chatty-vert.vercel.app"],
+    origin: ['http://localhost:5173', 'https://chatty-vert.vercel.app'],
     credentials: true,
-  })
+  }),
 );
 
 // Request logging middleware
@@ -34,15 +34,18 @@ app.use((req, res, next) => {
       path: req.path,
       status: res.statusCode,
       duration: `${duration}ms`,
-      timestamp: format(new Date(), 'PPpp')
+      timestamp: format(new Date(), 'PPpp'),
     };
-    
+
     // Update metrics
-    metrics.systemMetrics.requestsPerEndpoint[req.path] = (metrics.systemMetrics.requestsPerEndpoint[req.path] || 0) + 1;
-    metrics.systemMetrics.responseTimeAvg[req.path] = metrics.systemMetrics.responseTimeAvg[req.path] 
-      ? (metrics.systemMetrics.responseTimeAvg[req.path] + duration) / 2 
+    metrics.systemMetrics.requestsPerEndpoint[req.path] =
+      (metrics.systemMetrics.requestsPerEndpoint[req.path] || 0) + 1;
+    metrics.systemMetrics.responseTimeAvg[req.path] = metrics.systemMetrics.responseTimeAvg[
+      req.path
+    ]
+      ? (metrics.systemMetrics.responseTimeAvg[req.path] + duration) / 2
       : duration;
-      
+
     if (res.statusCode >= 400) {
       metrics.systemMetrics.errorCount++;
       metrics.systemMetrics.lastErrors.push(log);
@@ -50,7 +53,7 @@ app.use((req, res, next) => {
       metrics.errorLog.push(log);
     }
     metrics.requestLog.push(log);
-    
+
     // Keep logs within reasonable size
     if (metrics.requestLog.length > 1000) metrics.requestLog.shift();
     if (metrics.errorLog.length > 500) metrics.errorLog.shift();
@@ -76,23 +79,23 @@ app.use('/api/message', messageRoutes);
 app.use('/api/health', healthRoutes);
 
 // Production configuration
-if (process.env.NODE_ENV === "production") {
-  console.log("🏭 Production mode detected, serving static files");
+if (process.env.NODE_ENV === 'production') {
+  console.log('🏭 Production mode detected, serving static files');
   const clientDistPath = path.resolve(__dirname, '../../client/dist');
-  
-  app.use(express.static(clientDistPath));
-  console.log("📂 Serving static files from:", clientDistPath);
 
-  app.get("*", (req, res) => {
+  app.use(express.static(clientDistPath));
+  console.log('📂 Serving static files from:', clientDistPath);
+
+  app.get('*', (req, res) => {
     const indexPath = path.resolve(clientDistPath, 'index.html');
-    console.log("📂 Serving client build at:", indexPath);
-    
+    console.log('📂 Serving client build at:', indexPath);
+
     // Check if file exists before sending
     if (!fs.existsSync(indexPath)) {
-      console.error("❌ Client build not found at:", indexPath);
+      console.error('❌ Client build not found at:', indexPath);
       return res.status(404).send('Client build not found');
     }
-    
+
     res.sendFile(indexPath);
   });
 }
