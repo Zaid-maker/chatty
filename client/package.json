@@ -7,7 +7,12 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "bun test",
+    "analyze": "vite-bundle-analyzer",
+    "audit": "bun pm audit",
+    "lighthouse": "lighthouse http://localhost:3000 --output-path=./lighthouse-report.html --view",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "axios": "^1.7.9",

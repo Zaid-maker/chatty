@@ -6,13 +6,15 @@
   "scripts": {
     "start": "bun src/server.js",
     "dev": "bun --watch src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "bun test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "seed:db": "bun src/seeds/user.seed.js",
-    "seed:db:clear": "bun src/seeds/user.seed.js --clear"
+    "seed:db:clear": "bun src/seeds/user.seed.js --clear",
+    "build": "bun build ./src/server.js --target=node --outfile=dist/server.js",
+    "audit": "bun pm audit"
   },
   "keywords": [],
   "author": "",
