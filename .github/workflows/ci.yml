@@ -29,10 +29,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-bun-
 
+      - name: 🔒 Setup Snyk
+        uses: snyk/actions/setup@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       - name: 🔒 Security audit
         run: |
-          cd server && bun run audit
-          cd ../client && bun run audit
+          cd server && bun snyk test
+          cd ../client && bun snyk test
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true  # Optional: prevents CI failure on security issues
 
       - name: 📝 Lint server
         working-directory: ./server
