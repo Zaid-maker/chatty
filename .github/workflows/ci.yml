@@ -75,6 +75,21 @@ jobs:
           cd server && bun test
           cd ../client && bun test
 
+      - name: 🧪 Run tests with coverage
+        run: |
+          cd server && bun test --coverage
+          cd ../client && bun run test:coverage
+
+      - name: 📊 Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: |
+            ./server/coverage/coverage-final.json
+            ./client/coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+
   build:
     name: Build & Deploy 🚀
     runs-on: ubuntu-latest

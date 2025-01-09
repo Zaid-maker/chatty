@@ -14,7 +14,9 @@
     "seed:db": "bun src/seeds/user.seed.js",
     "seed:db:clear": "bun src/seeds/user.seed.js --clear",
     "build": "bun build ./src/server.js --target=node --outfile=dist/server.js",
-    "audit": "bun pm audit"
+    "audit": "bun pm audit",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +40,7 @@
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.14.0",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "supertest": "^6.3.3"
   }
 }
