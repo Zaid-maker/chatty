@@ -9,7 +9,6 @@ export default function HealthPage() {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        // Use the full URL in development
         const baseUrl = process.env.NODE_ENV === 'development' 
           ? 'http://localhost:5001' 
           : '';
@@ -19,21 +18,13 @@ export default function HealthPage() {
             'Accept': 'application/json'
           }
         });
-
-        // Log the full response for debugging
-        console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
         
         if (!response.ok) {
-          const text = await response.text();
-          console.error('Error response:', text);
           throw new Error(`Failed to fetch health status: ${response.status}`);
         }
         
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-          const text = await response.text();
-          console.error('Non-JSON response:', text);
           throw new Error('Server returned non-JSON response');
         }
         

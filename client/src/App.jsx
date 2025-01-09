@@ -20,8 +20,6 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  console.log({ authUser });
-
   return (
     <div className="p-4">
       <Navbar />
