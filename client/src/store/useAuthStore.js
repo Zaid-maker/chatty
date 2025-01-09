@@ -45,7 +45,7 @@ export const useAuthStore = create((set, get) => ({
      * @param {Object} data - The user's data, containing a fullName, email, and password.
      * @returns {Promise<void>} A promise that resolves when the user has been signed up.
      */
-    signUp: async (data) => {
+    signup: async (data) => {
         set({ isSigningUp: true }); 
         try {
             const res = await axiosInstance.post("/auth/signup", data);
@@ -70,7 +70,7 @@ export const useAuthStore = create((set, get) => ({
      * @param {Object} data - The user's credentials, containing a username and password.
      * @returns {Promise<void>} A promise that resolves when the user has been logged in.
      */
-    logIn: async (data) => {
+    login: async (data) => {
         set({ isLoggingIn: true });
         try {
             const res = await axiosInstance.post("/auth/login", data);
@@ -92,7 +92,7 @@ export const useAuthStore = create((set, get) => ({
      * @instance
      * @returns {Promise<void>} A promise that resolves when the user has been logged out.
      */
-    logOut: async () => {
+    logout: async () => {
         try {
             await axiosInstance.post("/auth/logout");
             set({ authUser: null });
