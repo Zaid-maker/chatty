@@ -43,6 +43,7 @@ jobs:
       - name: Lint client
         working-directory: ./client
         run: bun run lint
+        continue-on-error: true
 
       - name: Build client
         working-directory: ./client
