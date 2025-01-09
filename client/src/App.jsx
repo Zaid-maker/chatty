@@ -12,6 +12,7 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 
 import { Loader } from "lucide-react";
+import SignupPage from "./pages/SignupPage";
 // import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -32,10 +33,10 @@ function App() {
           path="/"
           element={authUser ? <HomePage /> : <Navigate to="/login" />}
         />
-        {/* <Route
+        <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
-        /> */}
+          element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+        />
         <Route
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}
