@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Typography, Paper, CircularProgress } from '@mui/material';
+import { Loader } from 'lucide-react';
 
 export default function HealthPage() {
   const [health, setHealth] = useState(null);
@@ -21,42 +21,40 @@ export default function HealthPage() {
     };
 
     fetchHealth();
-    const interval = setInterval(fetchHealth, 30000); // Refresh every 30 seconds
+    const interval = setInterval(fetchHealth, 30000);
     return () => clearInterval(interval);
   }, []);
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-        <CircularProgress />
-      </Box>
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Loader className="w-8 h-8 animate-spin" />
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Box p={3}>
-        <Typography color="error">{error}</Typography>
-      </Box>
+      <div className="p-4 text-red-500">
+        {error}
+      </div>
     );
   }
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" gutterBottom>
-        System Health Status
-      </Typography>
-      <Paper elevation={2} sx={{ p: 3 }}>
-        <Typography variant="body1" gutterBottom>
-          Status: <strong>{health?.status}</strong>
-        </Typography>
-        <Typography variant="body1" gutterBottom>
+    <div className="container mx-auto px-4 pt-20">
+      <h1 className="text-2xl font-bold mb-6">System Health Status</h1>
+      <div className="bg-base-200 rounded-lg p-6 shadow-lg">
+        <div className="mb-4">
+          Status: <span className="font-semibold">{health?.status}</span>
+        </div>
+        <div className="mb-4">
           Last Updated: {new Date(health?.timestamp || '').toLocaleString()}
-        </Typography>
-        <Typography variant="body1">
+        </div>
+        <div>
           Uptime: {Math.floor((health?.uptime || 0) / 3600)} hours {Math.floor(((health?.uptime || 0) % 3600) / 60)} minutes
-        </Typography>
-      </Paper>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 }
