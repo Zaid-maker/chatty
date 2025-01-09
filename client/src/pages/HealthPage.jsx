@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { 
-  Loader, 
-  Server, 
-  Clock, 
-  Activity, 
+import { useState, useEffect } from "react";
+import {
+  Loader,
+  Server,
+  Clock,
+  Activity,
   HardDrive, // Changed from Memory
-  Cpu, 
-  AlertTriangle 
-} from 'lucide-react';
-import toast from 'react-hot-toast';
+  Cpu,
+  AlertTriangle,
+} from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function HealthPage() {
   const [health, setHealth] = useState(null);
@@ -18,38 +18,38 @@ export default function HealthPage() {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const baseUrl = process.env.NODE_ENV === 'development' 
-          ? 'http://localhost:5001' 
-          : '';
-        
+        const baseUrl =
+          process.env.NODE_ENV === "development" ? "http://localhost:5001" : "";
+
         const response = await fetch(`${baseUrl}/api/health`, {
           headers: {
-            'Accept': 'application/json'
-          }
+            Accept: "application/json",
+          },
         });
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch health status: ${response.status}`);
         }
-        
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          throw new Error('Server returned non-JSON response');
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Server returned non-JSON response");
         }
-        
+
         const data = await response.json();
         setHealth(data);
         toast.success(`Server is ${data.status}`, {
           duration: 2000,
-          icon: '🟢',
+          icon: "🟢",
         });
       } catch (err) {
-        console.error('Health check error:', err);
-        const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+        console.error("Health check error:", err);
+        const errorMessage =
+          err instanceof Error ? err.message : "An error occurred";
         setError(errorMessage);
         toast.error(errorMessage, {
           duration: 4000,
-          icon: '🔴',
+          icon: "🔴",
         });
       } finally {
         setLoading(false);
@@ -65,19 +65,23 @@ export default function HealthPage() {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    
+
     return `${days}d ${hours}h ${minutes}m`;
   };
 
-  const renderMetricValue = (value, placeholder = 'N/A', formatter = null) => {
+  const renderMetricValue = (value, placeholder = "N/A", formatter = null) => {
     if (value === undefined || value === null) {
       return <span className="text-base-content/50 italic">{placeholder}</span>;
     }
-    return <span className="font-semibold">{formatter ? formatter(value) : value}</span>;
+    return (
+      <span className="font-semibold">
+        {formatter ? formatter(value) : value}
+      </span>
+    );
   };
 
   const formatBytes = (bytes) => {
-    if (!bytes) return '0 GB';
+    if (!bytes) return "0 GB";
     return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
   };
 
@@ -90,11 +94,7 @@ export default function HealthPage() {
   }
 
   if (error) {
-    return (
-      <div className="mt-20 p-4 text-red-500">
-        {error}
-      </div>
-    );
+    return <div className="mt-20 p-4 text-red-500">{error}</div>;
   }
 
   return (
@@ -104,7 +104,7 @@ export default function HealthPage() {
           <Server className="w-6 h-6" />
           System Health Status
         </h1>
-        
+
         {!health && !loading && !error ? (
           <div className="bg-warning/10 border border-warning rounded-lg p-4 mb-6 flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-warning" />
@@ -122,15 +122,17 @@ export default function HealthPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">Status</span>
-                {renderMetricValue(health?.status, 'Unknown', (status) => (
-                  <span className={`${status === 'healthy' ? 'text-success' : 'text-error'}`}>
+                {renderMetricValue(health?.status, "Unknown", (status) => (
+                  <span
+                    className={`${status === "healthy" ? "text-success" : "text-error"}`}
+                  >
                     {status}
                   </span>
                 ))}
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">Environment</span>
-                {renderMetricValue(health?.environment, 'Unknown')}
+                {renderMetricValue(health?.environment, "Unknown")}
               </div>
             </div>
           </div>
@@ -144,14 +146,12 @@ export default function HealthPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">Uptime</span>
-                {renderMetricValue(health?.uptime, 'No data', formatUptime)}
+                {renderMetricValue(health?.uptime, "No data", formatUptime)}
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">Last Updated</span>
-                {renderMetricValue(
-                  health?.timestamp, 
-                  'Never', 
-                  (time) => new Date(time).toLocaleString()
+                {renderMetricValue(health?.timestamp, "Never", (time) =>
+                  new Date(time).toLocaleString(),
                 )}
               </div>
             </div>
@@ -160,24 +160,33 @@ export default function HealthPage() {
           {/* System Resources Card */}
           <div className="bg-base-200 rounded-lg p-6 shadow-lg">
             <div className="flex items-center gap-2 text-lg font-semibold mb-4">
-              <HardDrive className="w-5 h-5" /> {/* Changed from Memory to HardDrive */}
+              <HardDrive className="w-5 h-5" />{" "}
+              {/* Changed from Memory to HardDrive */}
               Memory Usage
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">Total Memory</span>
-                {renderMetricValue(health?.memory?.total, 'No data', formatBytes)}
+                {renderMetricValue(
+                  health?.memory?.total,
+                  "No data",
+                  formatBytes,
+                )}
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">Free Memory</span>
-                {renderMetricValue(health?.memory?.free, 'No data', formatBytes)}
+                {renderMetricValue(
+                  health?.memory?.free,
+                  "No data",
+                  formatBytes,
+                )}
               </div>
               {health?.memory?.total && health?.memory?.free ? (
                 <div className="w-full bg-base-300 rounded-full h-2.5 mt-2">
-                  <div 
-                    className="bg-primary h-2.5 rounded-full" 
-                    style={{ 
-                      width: `${(1 - ((health.memory.free) / (health.memory.total))) * 100}%` 
+                  <div
+                    className="bg-primary h-2.5 rounded-full"
+                    style={{
+                      width: `${(1 - health.memory.free / health.memory.total) * 100}%`,
                     }}
                   ></div>
                 </div>
@@ -199,14 +208,14 @@ export default function HealthPage() {
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">CPU Load</span>
                 {renderMetricValue(
-                  health?.cpu?.loadAvg?.[0], 
-                  'No data',
-                  (load) => `${load.toFixed(2)}%`
+                  health?.cpu?.loadAvg?.[0],
+                  "No data",
+                  (load) => `${load.toFixed(2)}%`,
                 )}
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-base-content/70">CPU Cores</span>
-                {renderMetricValue(health?.cpu?.cores, 'Unknown')}
+                {renderMetricValue(health?.cpu?.cores, "Unknown")}
               </div>
             </div>
           </div>

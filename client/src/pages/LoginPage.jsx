@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import AuthImagePattern from "../components/AuthImagePattern";
-import { Eye, EyeOff, Link, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Link,
+  Loader2,
+  Lock,
+  Mail,
+  MessageSquare,
+} from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 const LoginPage = () => {
@@ -85,13 +93,17 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={isLoggingIn}
+            >
               {isLoggingIn ? (
                 <>
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Loading...
                 </>
-              ): (
+              ) : (
                 "Sign in"
               )}
             </button>

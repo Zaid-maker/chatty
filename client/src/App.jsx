@@ -1,12 +1,12 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
-import HealthPage from './pages/HealthPage';
+import HealthPage from "./pages/HealthPage";
 
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
