@@ -15,6 +15,7 @@
     "analyze": "vite-bundle-analyzer",
     "audit": "snyk test",
     "lighthouse": "lighthouse http://localhost:3000 --output-path=./lighthouse-report.html --view",
+    "format": "prettier --write .",
     "format:check": "prettier --check .",
     "security:monitor": "snyk monitor"
   },
