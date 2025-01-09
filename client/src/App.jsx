@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from "./components/Navbar";
+import { Toaster } from 'react-hot-toast';
 
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <div className="p-4">
+      <Toaster position="top-right" />
       <Navbar />
 
       <Routes>

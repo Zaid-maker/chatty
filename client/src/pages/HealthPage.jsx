@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Loader } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function HealthPage() {
   const [health, setHealth] = useState(null);
@@ -30,9 +31,18 @@ export default function HealthPage() {
         
         const data = await response.json();
         setHealth(data);
+        toast.success(`Server is ${data.status}`, {
+          duration: 2000,
+          icon: '🟢',
+        });
       } catch (err) {
         console.error('Health check error:', err);
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        const errorMessage = err instanceof Error ? err.message : 'An error occurred';
+        setError(errorMessage);
+        toast.error(errorMessage, {
+          duration: 4000,
+          icon: '🔴',
+        });
       } finally {
         setLoading(false);
       }
