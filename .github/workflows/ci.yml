@@ -1,4 +1,4 @@
-name: CI
+name: CI 🚀
 
 on:
   workflow_dispatch:
@@ -18,33 +18,33 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Bun
+      - name: 🥟 Install Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Install server dependencies
+      - name: 📦 Install server dependencies
         working-directory: ./server
         run: bun install
 
-      - name: Install client dependencies
+      - name: 📦 Install client dependencies
         working-directory: ./client
         run: bun install
 
-      - name: Lint server
+      - name: 🔍 Lint server
         working-directory: ./server
         run: bun run lint
 
-      - name: Lint client
+      - name: 🔍 Lint client
         working-directory: ./client
         run: bun run lint
         continue-on-error: true
 
-      - name: Build client
+      - name: 🏗️ Build client
         working-directory: ./client
         run: bun run build
