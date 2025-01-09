@@ -1,5 +1,6 @@
 import { THEMES } from "../constants";
-import React from "react";
+import { useThemeStore } from "../store/useThemeStore";
+import { Send } from "lucide-react";
 
 const PREVIEW_MESSAGES = [
   { id: 1, content: "Hey! How's it going?", isSent: false },
@@ -11,6 +12,8 @@ const PREVIEW_MESSAGES = [
 ];
 
 const SettingsPage = () => {
+  const { theme, setTheme } = useThemeStore();
+
   return (
     <div className="h-screen container mx-auto px-4 pt-20 max-w-5xl">
       <div className="space-y-4">
@@ -29,6 +32,7 @@ const SettingsPage = () => {
                 group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-colors
                 ${t ? "bg-base-200" : "hover:bg-base-200/50"}
                 `}
+              onClick={() => setTheme(t)}
             >
               <div
                 className="relative h-8 w-full rounded-md overflow-hidden"
