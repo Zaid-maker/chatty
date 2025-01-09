@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install server dependencies
+        working-directory: ./server
+        run: bun install
+
+      - name: Install client dependencies
+        working-directory: ./client
+        run: bun install
+
+      - name: Lint server
+        working-directory: ./server
+        run: bun run lint
+
+      - name: Lint client
+        working-directory: ./client
+        run: bun run lint
+
+      - name: Build client
+        working-directory: ./client
+        run: bun run build
