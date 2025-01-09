@@ -42,19 +42,26 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         continue-on-error: true  # Optional: prevents CI failure on security issues
 
+      - name: 🛠️ Install Global Dependencies
+        run: bun install -g eslint prettier
+
       - name: 📝 Lint server
         working-directory: ./server
-        run: bun run lint
+        run: |
+          bun install
+          bunx eslint .
 
       - name: 📝 Lint client
         working-directory: ./client
-        run: bun run lint
+        run: |
+          bun install
+          bunx eslint .
         continue-on-error: true
 
       - name: 🎨 Check formatting
         run: |
-          cd server && bun run format:check
-          cd ../client && bun run format:check
+          cd server && bunx prettier --check .
+          cd ../client && bunx prettier --check .
 
   test:
     name: Test Suite 🧪
