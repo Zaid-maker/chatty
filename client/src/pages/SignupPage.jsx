@@ -1,19 +1,55 @@
-import React, { useState } from "react";
-import AuthImagePattern from "../components/AuthImagePattern";
-import { Eye, EyeOff, Link, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
+import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+  MessageSquare,
+  User,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+import AuthImagePattern from "../components/AuthImagePattern";
+import toast from "react-hot-toast";
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
     password: "",
   });
-  const { login, isLoggingIn } = useAuthStore();
+  const { signup, isSigningUp } = useAuthStore();
 
+  /**
+   * Validates the signup form data and returns true if all fields are valid.
+   * If any field is invalid, a toast error is shown and false is returned.
+   * @returns {boolean} True if all fields are valid, false otherwise.
+   */
+  const validateForm = () => {
+    if (!formData.fullName.trim()) return toast.error("Full name is required");
+    if (!formData.email.trim()) return toast.error("Email is required");
+    if (!/\S+@\S+\.\S+/.test(formData.email))
+      return toast.error("Invalid email format");
+    if (!formData.password) return toast.error("Password is required");
+    if (formData.password.length < 6)
+      return toast.error("Password must be at least 6 characters");
+  };
+
+  /**
+   * Handles the signup form submission. Prevents the default form submission
+   * behavior, validates the form data, and calls the signup function from the
+   * useAuthStore hook if the form is valid.
+   * @param {React.FormEvent<HTMLFormElement>} e - The form event object.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
+
+    const success = validateForm();
+
+    if (success === true) signup(formData);
   };
 
   return (
@@ -27,8 +63,10 @@ const SignupPage = () => {
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <MessageSquare className="w-6 h-6 text-primary" />
               </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome Back</h1>
-              <p className="text-base-content/60">Sign in to your account</p>
+              <h1 className="text-2xl font-bold mt-2">Create Account</h1>
+              <p className="text-base-content/60">
+                Get started with your free account
+              </p>
             </div>
           </div>
 
@@ -85,23 +123,27 @@ const SignupPage = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary w-full" disabled={isLoggingIn}>
-              {isLoggingIn ? (
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={isSigningUp}
+            >
+              {isSigningUp ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="size-5 animate-spin" />
                   Loading...
                 </>
-              ): (
-                "Sign in"
+              ) : (
+                "Create Account"
               )}
             </button>
           </form>
 
           <div className="text-center">
             <p className="text-base-content/60">
-              Don&apos;t have an account?{" "}
-              <Link to="/signup" className="link link-primary">
-                Create account
+              Already have an account?{" "}
+              <Link to="/login" className="link link-primary">
+                Sign in
               </Link>
             </p>
           </div>
@@ -109,10 +151,8 @@ const SignupPage = () => {
       </div>
       {/* Right Side - Image/Pattern */}
       <AuthImagePattern
-        title={"Welcome back!"}
-        subtitle={
-          "Sign in to continue your conversations and catch up with your messages."
-        }
+        title="Join our community"
+        subtitle="Connect with friends, share moments, and stay in touch with your loved ones."
       />
     </div>
   );
