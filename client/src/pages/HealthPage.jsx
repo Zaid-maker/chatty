@@ -9,11 +9,38 @@ export default function HealthPage() {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const response = await fetch('/api/health');
-        if (!response.ok) throw new Error('Failed to fetch health status');
+        // Use the full URL in development
+        const baseUrl = process.env.NODE_ENV === 'development' 
+          ? 'http://localhost:5001' 
+          : '';
+        
+        const response = await fetch(`${baseUrl}/api/health`, {
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        // Log the full response for debugging
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        
+        if (!response.ok) {
+          const text = await response.text();
+          console.error('Error response:', text);
+          throw new Error(`Failed to fetch health status: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error('Server returned non-JSON response');
+        }
+        
         const data = await response.json();
         setHealth(data);
       } catch (err) {
+        console.error('Health check error:', err);
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
         setLoading(false);
@@ -27,7 +54,7 @@ export default function HealthPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[200px]">
+      <div className="mt-20 flex justify-center items-center min-h-[200px]">
         <Loader className="w-8 h-8 animate-spin" />
       </div>
     );
@@ -35,26 +62,28 @@ export default function HealthPage() {
 
   if (error) {
     return (
-      <div className="p-4 text-red-500">
+      <div className="mt-20 p-4 text-red-500">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 pt-20">
-      <h1 className="text-2xl font-bold mb-6">System Health Status</h1>
-      <div className="bg-base-200 rounded-lg p-6 shadow-lg">
-        <div className="mb-4">
-          Status: <span className="font-semibold">{health?.status}</span>
-        </div>
-        <div className="mb-4">
-          Last Updated: {new Date(health?.timestamp || '').toLocaleString()}
-        </div>
-        <div>
-          Uptime: {Math.floor((health?.uptime || 0) / 3600)} hours {Math.floor(((health?.uptime || 0) % 3600) / 60)} minutes
+    <main className="mt-20">
+      <div className="container mx-auto max-w-4xl">
+        <h1 className="text-2xl font-bold mb-6">System Health Status</h1>
+        <div className="bg-base-200 rounded-lg p-6 shadow-lg">
+          <div className="mb-4">
+            Status: <span className="font-semibold text-primary">{health?.status}</span>
+          </div>
+          <div className="mb-4">
+            Last Updated: {new Date(health?.timestamp || '').toLocaleString()}
+          </div>
+          <div>
+            Uptime: {Math.floor((health?.uptime || 0) / 3600)} hours {Math.floor(((health?.uptime || 0) % 3600) / 60)} minutes
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
