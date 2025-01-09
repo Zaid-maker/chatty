@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 
 import HomePage from "./pages/HomePage";
@@ -23,28 +23,26 @@ function App() {
   console.log({ authUser });
 
   return (
-    <Router>
-      <div className="p-4">
-        <Navbar />
+    <div className="p-4">
+      <Navbar />
 
-        <Routes>
-          <Route
-            path="/"
-            element={authUser ? <HomePage /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/signup"
-            element={!authUser ? <SignupPage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/login"
-            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
-          />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/health" element={<HealthPage />} />
-        </Routes>
-      </div>
-    </Router>
+      <Routes>
+        <Route
+          path="/"
+          element={authUser ? <HomePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/signup"
+          element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/health" element={<HealthPage />} />
+      </Routes>
+    </div>
   );
 }
 
