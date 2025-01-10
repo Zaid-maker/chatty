@@ -11,6 +11,8 @@ jobs:
   quality:
     name: Quality Checks 🔍
     runs-on: ubuntu-latest
+    permissions: # Add permissions for push
+      contents: write
     steps:
       - uses: actions/checkout@v3
 
@@ -57,6 +59,29 @@ jobs:
           bun install
           bunx eslint .
         continue-on-error: true
+
+      - name: 🎨 Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: 🎨 Fix formatting
+        run: |
+          cd server && bunx prettier --write .
+          cd ../client && bunx prettier --write .
+
+      - name: 🔍 Check for changes
+        id: git-check
+        run: |
+          git status --porcelain
+          echo "changes=$(git status --porcelain | wc -l)" >> $GITHUB_OUTPUT
+
+      - name: 📝 Commit & Push changes
+        if: steps.git-check.outputs.changes > 0
+        run: |
+          git add .
+          git commit -m "🎨 style: format code with prettier"
+          git push
 
       - name: 🎨 Check formatting
         run: |
