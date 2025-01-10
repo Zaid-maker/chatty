@@ -112,7 +112,7 @@ jobs:
 
       - name: 📊 Analyze bundle size
         working-directory: ./client
-        run: bun run analyze
+        run: ANALYZE=true bun run build
 
       - name: 🚀 Build server
         working-directory: ./server
