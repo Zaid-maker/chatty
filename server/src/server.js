@@ -117,18 +117,22 @@ const init = async () => {
     setupConnectionHandlers();
 
     const PORT = process.env.PORT;
-    app.listen(PORT, () => {
-      console.log(`
+    if (import.meta.url === `file://${process.argv[1]}`) {
+      app.listen(PORT, () => {
+        console.log(`
 ═══════════════════════════════════════════
 🚀 Server running on port ${PORT}
 📊 Environment: ${process.env.NODE_ENV}
 🔗 http://localhost:${PORT}
 ═══════════════════════════════════════════`);
-    });
+      });
+    }
   } catch (error) {
     console.error('❌ Server initialization failed:', error);
     process.exit(1);
   }
 };
+
+export { app };
 
 init();

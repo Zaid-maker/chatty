@@ -6,7 +6,7 @@
   "scripts": {
     "start": "bun src/server.js",
     "dev": "bun --watch src/server.js",
-    "test": "bun test",
+    "test": "NODE_ENV=test bun test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -16,7 +16,7 @@
     "build": "bun build ./src/server.js --target=node --outfile=dist/server.js",
     "audit": "snyk test",
     "security:monitor": "snyk monitor",
-    "test:watch": "bun test --watch",
+    "test:watch": "NODE_ENV=test bun test --watch",
     "test:coverage": "bun test --coverage"
   },
   "keywords": [],
