@@ -6,7 +6,6 @@
   "scripts": {
     "start": "bun src/server.js",
     "dev": "bun --watch src/server.js",
-    "test": "NODE_ENV=test bun test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -15,9 +14,7 @@
     "seed:db:clear": "bun src/seeds/user.seed.js --clear",
     "build": "bun build ./src/server.js --target=node --outfile=dist/server.js",
     "audit": "snyk test",
-    "security:monitor": "snyk monitor",
-    "test:watch": "NODE_ENV=test bun test --watch",
-    "test:coverage": "bun test --coverage"
+    "security:monitor": "snyk monitor"
   },
   "keywords": [],
   "author": "",
@@ -42,7 +39,6 @@
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
-    "supertest": "^6.3.3",
     "snyk": "^1.1.0"
   }
 }
