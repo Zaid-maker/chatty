@@ -118,10 +118,11 @@ jobs:
         working-directory: ./server
         run: bun run build
 
-      - name: 🌐 Install Chrome for Lighthouse
+      - name: 🌐 Install Chrome and Xvfb
         run: |
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt install ./google-chrome-stable_current_amd64.deb
+          sudo apt-get update
+          sudo apt-get install -y ./google-chrome-stable_current_amd64.deb xvfb
 
       - name: 📊 Install Lighthouse
         run: bun install -g lighthouse
@@ -132,9 +133,9 @@ jobs:
           bun run build
           bun run preview & sleep 5
 
-      - name: 📈 Run Lighthouse check
+      - name: 📈 Run Lighthouse check with Xvfb
         run: |
-          lighthouse http://localhost:4173 \
+          xvfb-run --auto-servernum lighthouse http://localhost:4173 \
             --chrome-flags="--headless --no-sandbox --disable-gpu" \
             --output html --output-path ./lighthouse-report.html
 
@@ -143,10 +144,6 @@ jobs:
         with:
           name: lighthouse-report
           path: lighthouse-report.html
-
-      - name: 📈 Performance check
-        working-directory: ./client
-        run: bun run lighthouse
 
       - name: 📦 Upload artifacts
         uses: actions/upload-artifact@v3
