@@ -5,9 +5,27 @@
   "main": "index.js",
   "scripts": {
     "build": "cd server && bun install && cd ../client && bun install && bun run build",
-    "start": "cd server && bun run start"
+    "start": "cd server && bun run start",
+    "prepare": "simple-git-hooks"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "simple-git-hooks": "^2.9.0",
+    "lint-staged": "^15.0.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "bun lint-staged",
+    "pre-push": "cd server && bun run lint && cd ../client && bun run lint"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "**/*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
 }
