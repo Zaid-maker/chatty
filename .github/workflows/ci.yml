@@ -140,13 +140,13 @@ jobs:
             --output html --output-path ./lighthouse-report.html
 
       - name: 📊 Upload Lighthouse report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: lighthouse-report.html
 
       - name: 📦 Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: |
