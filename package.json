@@ -5,27 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "cd server && bun install && cd ../client && bun install && bun run build",
-    "start": "cd server && bun run start",
-    "prepare": "husky || true",
-    "postinstall": "node scripts/setup-husky.mjs",
-    "lint-staged": "lint-staged"
+    "start": "cd server && bun run start"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "husky": "^9.0.0",
-    "lint-staged": "^15.0.0"
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ],
-    "**/*.{json,md,yml,yaml}": [
-      "prettier --write",
-      "git add"
-    ]
-  }
+  "license": "ISC"
 }
