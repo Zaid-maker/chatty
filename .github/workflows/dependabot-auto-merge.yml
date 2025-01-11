@@ -23,16 +23,33 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: ✅ Approve PR
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr review --approve "$PR_URL"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_GITHUB }}
+          script: |
+            await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE'
+            })
           
       - name: 🔄 Enable auto-merge
         if: |
           steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
           steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr merge --auto --squash "$PR_URL"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_GITHUB }}
+          script: |
+            await github.rest.pulls.updateBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            })
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              merge_method: 'squash'
+            })
