@@ -6,7 +6,8 @@
   "scripts": {
     "build": "cd server && bun install && cd ../client && bun install && bun run build",
     "start": "cd server && bun run start",
-    "prepare": "node .husky/install.mjs",
+    "prepare": "husky || true",
+    "postinstall": "node scripts/setup-husky.mjs",
     "lint-staged": "lint-staged"
   },
   "keywords": [],
