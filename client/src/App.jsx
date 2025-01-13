@@ -3,17 +3,16 @@ import { Toaster } from "react-hot-toast";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
-import HealthPage from "./pages/HealthPage";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import SettingsPage from "./pages/SettingsPage";
+import HealthPage from "./pages/HealthPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 
 import { useEffect } from "react";
 import { useAuthStore } from "./store/useAuthStore";
 
-import ProfilePage from "./pages/ProfilePage";
-import SignUpPage from "./pages/SignUpPage";
-
+import ProfilePage from "./pages/ProfilePage.jsx";
+import SignUpPage from "./pages/SignUpPage.jsx";
 function App() {
   const { authUser, checkAuth } = useAuthStore();
 
