@@ -101,13 +101,14 @@ bun run dev
 ### 💬 Message Routes
 - `POST /api/messages/send/:id` - Send message to user
 - `GET /api/messages/:id` - Get chat history
-
-### 👥 User Routes
-- `GET /api/users` - Get all users
-- `GET /api/users/:id` - Get specific user
+- `GET /api/messages/users` - Get users for sidebar
 
 ### 🔍 System Routes
 - `GET /api/health` - Check system health
+- `GET /api/health/logs` - Get system logs
+- `GET /api/health/metrics` - Get system metrics
+- `POST /api/health/metrics/clear` - Clear system metrics
+- `GET /api/health/process` - Get process information
 
 ## 🤝 Contributing
 
