@@ -1,8 +1,8 @@
-import User from '../models/user.model';
-import Message from '../models/message.model';
+import User from "../models/user.model.js";
+import Message from "../models/message.model.js";
 
-import cloudinary from '../lib/cloudinary';
-import { getReceiverSocketId, io } from '../lib/socket';
+import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 /**
  * Gets a list of all users except the currently logged in user.
