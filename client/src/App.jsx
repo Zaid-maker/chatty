@@ -1,18 +1,18 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
+import HealthPage from "./pages/HealthPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SettingsPage from "./pages/SettingsPage";
-import HealthPage from "./pages/HealthPage";
 
-import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
+import { useAuthStore } from "./store/useAuthStore";
 
-import { Loader } from "lucide-react";
-import SignupPage from "./pages/SignupPage";
+import ProfilePage from "./pages/ProfilePage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   const { authUser, checkAuth } = useAuthStore();
@@ -23,7 +23,6 @@ function App() {
 
   return (
     <div className="p-4">
-      <Toaster position="top-right" />
       <Navbar />
 
       <Routes>
@@ -46,6 +45,8 @@ function App() {
         />
         <Route path="/health" element={<HealthPage />} />
       </Routes>
+
+      <Toaster />
     </div>
   );
 }
