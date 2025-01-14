@@ -75,6 +75,7 @@ jobs:
             git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
             git fetch origin
             git checkout -B ${{ github.head_ref }}
+            git pull origin ${{ github.head_ref }}
           fi
 
       - name: 🎨 Fix formatting
@@ -94,8 +95,10 @@ jobs:
           git add .
           git commit -m "🎨 style: format code with prettier"
           if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
-            git push origin HEAD:${{ github.head_ref }}
+            git pull --rebase origin ${{ github.head_ref }}
+            git push -f origin HEAD:${{ github.head_ref }}
           else
+            git pull --rebase origin ${{ github.ref_name }}
             git push
           fi
 
