@@ -21,7 +21,7 @@ function App() {
   }, [checkAuth]);
 
   return (
-    <div className="p-4">
+    <div data-theme="retro">
       <Navbar />
 
       <Routes>
