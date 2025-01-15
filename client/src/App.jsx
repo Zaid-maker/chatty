@@ -1,18 +1,16 @@
-import React from "react";
-import { Toaster } from "react-hot-toast";
-import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
-import HealthPage from "./pages/HealthPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import SettingsPage from "./pages/SettingsPage.jsx";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
+import SignUpPage from "./pages/SignUpPage";
 
 import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
 
-import ProfilePage from "./pages/ProfilePage.jsx";
-import SignUpPage from "./pages/SignUpPage";
+import { Toaster } from "react-hot-toast";
 function App() {
   const { authUser, checkAuth } = useAuthStore();
 
