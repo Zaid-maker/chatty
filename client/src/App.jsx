@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { useAuthStore } from "./store/useAuthStore";
 
 import ProfilePage from "./pages/ProfilePage.jsx";
-import SignUpPage from "./pages/SignUpPage.jsx";
+import SignUpPage from "./pages/SignUpPage";
 function App() {
   const { authUser, checkAuth } = useAuthStore();
 
