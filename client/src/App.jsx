@@ -1,18 +1,17 @@
-import React from "react";
-import { Toaster } from "react-hot-toast";
-import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
-import HealthPage from "./pages/HealthPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import SettingsPage from "./pages/SettingsPage.jsx";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
+import SignupPage from "./pages/SignupPage";
+import HealthPage from "./pages/HealthPage";
 
 import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore";
 
-import ProfilePage from "./pages/ProfilePage.jsx";
-import SignUpPage from "./pages/SignUpPage.jsx";
+import { Toaster } from "react-hot-toast";
 function App() {
   const { authUser, checkAuth } = useAuthStore();
 
@@ -21,7 +20,7 @@ function App() {
   }, [checkAuth]);
 
   return (
-    <div className="p-4">
+    <div data-theme="retro">
       <Navbar />
 
       <Routes>
@@ -31,7 +30,7 @@ function App() {
         />
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={!authUser ? <SignupPage /> : <Navigate to="/" />}
         />
         <Route
           path="/login"

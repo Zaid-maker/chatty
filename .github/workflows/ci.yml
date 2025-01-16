@@ -69,6 +69,15 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global pull.rebase true
+          
+          # If PR, checkout the head branch
+          if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            git remote set-url origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+            git fetch origin
+            git checkout -B ${{ github.head_ref }}
+            git reset --hard origin/${{ github.head_ref }}
+          fi
 
       - name: 🎨 Fix formatting
         run: |
@@ -86,7 +95,11 @@ jobs:
         run: |
           git add .
           git commit -m "🎨 style: format code with prettier"
-          git push
+          if [[ $GITHUB_EVENT_NAME == 'pull_request' ]]; then
+            git push -f origin HEAD:${{ github.head_ref }}
+          else
+            git push origin HEAD:${{ github.ref_name }}
+          fi
 
       - name: 🎨 Check formatting
         run: |

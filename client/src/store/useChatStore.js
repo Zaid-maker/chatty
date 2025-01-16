@@ -64,7 +64,7 @@ export const useChatStore = create((set, get) => ({
     });
   },
 
-  ubsubscribeToMessages: () => {
+  unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
     socket.off("newMessage");
   },
