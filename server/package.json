@@ -12,6 +12,7 @@
     "format:check": "prettier --check .",
     "seed:db": "bun src/seeds/user.seed.js",
     "seed:db:clear": "bun src/seeds/user.seed.js --clear",
+    "build": "bun build ./src/server.js --target=node --outfile=dist/server.js",
     "audit": "snyk test",
     "security:monitor": "snyk monitor"
   },
