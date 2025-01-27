@@ -18,12 +18,24 @@ const ChatContainer = () => {
     getMessages(selectedUser._id);
 
     subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
   }, [
     selectedUser._id,
     getMessages,
     subscribeToMessages,
     unsubscribeFromMessages,
   ]);
+
+  useEffect(() => {
+    if (messageEndRef.current && messages) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  if (isMessagesLoading) {
+    return <div>Loading messages...</div>;
+  }
 
   return (
     <div className="flex-1 flex flex-col overflow-auto">
@@ -33,7 +45,18 @@ const ChatContainer = () => {
             key={message._id}
             className={`chat ${message.senderId ? "chat-end" : "chat-start"}`}
           >
-            <div className="chat-image avatar"></div>
+            <div className="chat-image avatar">
+              <div className="size-10 rounded-full border">
+                <img
+                  src={
+                    message.senderId === authUser._id
+                      ? authUser.profilePic || "/avatar.png"
+                      : selectedUser.profilePic || "/avatar.png"
+                  }
+                  alt="profilePic"
+                />
+              </div>
+            </div>
           </div>
         ))}
       </div>
